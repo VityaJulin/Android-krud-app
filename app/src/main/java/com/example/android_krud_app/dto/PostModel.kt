@@ -1,5 +1,10 @@
 package com.example.android_krud_app.dto
 
+import android.app.AlertDialog
+import android.content.Context
+import com.example.android_krud_app.R
+import kotlinx.android.synthetic.main.activity_create_post.*
+
 enum class AttachmentType {
     IMAGE, AUDIO, VIDEO
 }
@@ -41,5 +46,15 @@ data class PostModel(
         content = updatedModel.content
         reposts = updatedModel.reposts
         repostedByMe = updatedModel.repostedByMe
+    }
+
+    fun showDialog(context: Context, createBtnClicked: (content: String) -> Unit) {
+        val dialog = AlertDialog.Builder(context)
+            .setView(R.layout.activity_create_post)
+            .show()
+        dialog.createPostBtn.setOnClickListener {
+            createBtnClicked(dialog.contentEdt.text.toString())
+            dialog.dismiss()
+        }
     }
 }
