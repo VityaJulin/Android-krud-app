@@ -15,7 +15,7 @@ object Repository {
 
   private var retrofit: Retrofit =
     Retrofit.Builder()
-      .baseUrl("http://10.0.2.2:8888")
+      .baseUrl("https://android-krud-api.herokuapp.com/")
       .addConverterFactory(GsonConverterFactory.create())
       .build()
 
@@ -32,7 +32,7 @@ object Repository {
       .build()
     retrofit = Retrofit.Builder()
       .client(client)
-      .baseUrl("http://10.0.2.2:8888")
+      .baseUrl("https://android-krud-api.herokuapp.com/")
       .addConverterFactory(GsonConverterFactory.create())
       .build()
     //создаем API на основе нового retrofit-клиента
