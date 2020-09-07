@@ -1,8 +1,8 @@
 package com.example.android_krud_app.api
 
+import com.example.android_krud_app.dto.PostModel
 import retrofit2.Response
 import retrofit2.http.*
-import com.example.android_krud_app.dto.PostModel
 
 // Данные для авторизации
 data class AuthRequestParams(val username: String, val password: String)
@@ -28,22 +28,25 @@ data class PostRequest(
 
 
 interface API {
-  // URL запроса (без учета основного адресса)
-  @POST("api/v1/authentication")
-  suspend fun authenticate(@Body authRequestParams: AuthRequestParams): Response<Token>
+    // URL запроса (без учета основного адресса)
+    @POST("api/v1/authentication")
+    suspend fun authenticate(@Body authRequestParams: AuthRequestParams): Response<Token>
 
-  @POST("api/v1/registration")
-  suspend fun register(@Body registrationRequestParams: RegistrationRequestParams): Response<Token>
+    @POST("api/v1/registration")
+    suspend fun register(@Body registrationRequestParams: RegistrationRequestParams): Response<Token>
 
-  @POST("api/v1/posts")
-  suspend fun createPost(@Body createPostRequest: CreatePostRequest): Response<Void>
+    @POST("api/v1/posts")
+    suspend fun createPost(@Body createPostRequest: CreatePostRequest): Response<Void>
 
-  @GET("api/v1/posts")
-  suspend fun getPosts(): Response<List<PostModel>>
+    @GET("api/v1/posts")
+    suspend fun getPosts(): Response<List<PostModel>>
 
-  @POST("api/v1/posts/{id}/likes")
-  suspend fun likedByMe(@Path("id") id: Long): Response<PostModel>
+    @POST("api/v1/posts/{id}/likes")
+    suspend fun likedByMe(@Path("id") id: Long): Response<PostModel>
 
-  @DELETE("api/v1/posts/{id}/likes")
-  suspend fun cancelMyLike(@Path("id") id: Long): Response<PostModel>
+    @DELETE("api/v1/posts/{id}/likes")
+    suspend fun cancelMyLike(@Path("id") id: Long): Response<PostModel>
+
+    @POST("api/v1/posts/{id}/reposts")
+    suspend fun repostedByMe(@Path("id") id: Long): Response<PostModel>
 }

@@ -47,14 +47,4 @@ data class PostModel(
         reposts = updatedModel.reposts
         repostedByMe = updatedModel.repostedByMe
     }
-
-    fun showDialog(context: Context, createBtnClicked: (content: String) -> Unit) {
-        val dialog = AlertDialog.Builder(context)
-            .setView(R.layout.activity_create_post)
-            .show()
-        dialog.createPostBtn.setOnClickListener {
-            createBtnClicked(dialog.contentEdt.text.toString())
-            dialog.dismiss()
-        }
-    }
 }
