@@ -65,4 +65,6 @@ object Repository {
     suspend fun cancelMyLike(id: Long) = API.cancelMyLike(id)
 
     suspend fun repostedByMe(id: Long) = API.repostedByMe(id)
+
+    suspend fun getPostsAfter(id: Long) = API.getPostsAfter(id)
 }
