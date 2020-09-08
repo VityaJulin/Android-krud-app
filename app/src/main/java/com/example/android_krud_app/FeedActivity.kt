@@ -67,4 +67,18 @@ class FeedActivity : AppCompatActivity(),
             }
         }
     }
+
+    override fun onRepostBtnClicked(item: PostModel, position: Int) {
+        lifecycleScope.launch {
+            item.repostActionPerforming = true
+            with(container) {
+                adapter?.notifyItemChanged(position)
+                val response = Repository.repostedByMe(item.id)
+                if (response.isSuccessful) {
+                    item.updateLikes(response.body()!!)
+                }
+                adapter?.notifyItemChanged(position)
+            }
+        }
+    }
 }
