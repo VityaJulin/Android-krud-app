@@ -15,14 +15,14 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.item_load_more.view.*
 import kotlinx.android.synthetic.main.item_load_more.view.progressbar
 import kotlinx.android.synthetic.main.item_load_new.view.*
-import kotlinx.android.synthetic.main.item_load_new.view.loadNewBtn
 import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import splitties.toast.toast
 
-class PostAdapter(val list: MutableList<PostModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostAdapter(val list: MutableList<PostModel>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val ITEM_TYPE_POST = 1
     private val ITEM_TYPE_REPOST = 2
     private val ITEM_FOOTER = 3;
@@ -71,8 +71,8 @@ class PostAdapter(val list: MutableList<PostModel>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is PostViewHolder -> holder.bind(list[position])
-            is RepostViewHolder -> holder.bind(list[position])
+            is PostViewHolder -> holder.bind(list[position - 1])
+            is RepostViewHolder -> holder.bind(list[position - 1])
         }
     }
 
