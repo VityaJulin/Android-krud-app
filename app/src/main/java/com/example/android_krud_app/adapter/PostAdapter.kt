@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_krud_app.R
 import com.example.android_krud_app.Repository
@@ -14,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_create_post.*
 import kotlinx.android.synthetic.main.item_load_more.view.progressbar
 import kotlinx.android.synthetic.main.item_load_new.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import splitties.toast.toast
@@ -71,14 +73,15 @@ class PostAdapter(val list: List<PostModel>) : RecyclerView.Adapter<RecyclerView
             is RepostViewHolder -> holder.bind(list[position])
         }
     }
-}
 
-interface OnLikeBtnClickListener {
-    fun onLikeBtnClicked(item: PostModel, position: Int)
-}
 
-interface OnRepostBtnClickListener {
-    fun onRepostBtnClicked(item: PostModel, position: Int)
+    interface OnLikeBtnClickListener {
+        fun onLikeBtnClicked(item: PostModel, position: Int)
+    }
+
+    interface OnRepostBtnClickListener {
+        fun onRepostBtnClicked(item: PostModel, position: Int)
+    }
 }
 
 
@@ -114,10 +117,69 @@ class PostViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHo
             }
         }
     }
+
+    fun bind(post: PostModel) {
+        with(itemView) {
+            authorTv.text = post.ownerName
+            contentTv.text = post.content
+            likesTv.text = post.likes.toString()
+            repostsTv.text = post.reposts.toString()
+
+            if (post.likeActionPerforming) {
+                likeBtn.setImageResource(R.drawable.ic_favorite_pending_24dp)
+            } else if (post.likedByMe) {
+                likeBtn.setImageResource(R.drawable.ic_favorite_active_24dp)
+                likesTv.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+            } else {
+                likeBtn.setImageResource(R.drawable.ic_favorite_inactive_24dp)
+                likesTv.setTextColor(ContextCompat.getColor(context, R.color.colorBrown))
+            }
+
+            if (post.repostActionPerforming) {
+                repostBtn.setImageResource(R.drawable.ic_reposts_pending)
+            } else if (post.repostedByMe) {
+                repostBtn.setImageResource(R.drawable.ic_reposts_active)
+                repostsTv.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+            } else {
+                repostBtn.setImageResource(R.drawable.ic_reposts_inactive)
+                repostsTv.setTextColor(ContextCompat.getColor(context, R.color.colorBrown))
+            }
+        }
+    }
 }
 
 class RepostViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHolder(view) {
-    // TODO: 08.09.20  
+    init {
+        with(itemView) {
+            likeBtn.setOnClickListener {
+                val currentPosition = adapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    val item = adapter.list[currentPosition]
+                    if (item.likeActionPerforming) {
+                        context.toast(context.getString(R.string.like_in_progress))
+                    } else {
+                        adapter.likeBtnClickListener?.onLikeBtnClicked(item, currentPosition)
+                    }
+                }
+            }
+            repostBtn.setOnClickListener {
+                val currentPosition = adapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    val item = adapter.list[adapterPosition]
+                    if (item.repostedByMe) {
+                        context.toast("Can't repost repost)")
+                    } else {
+                        showDialog(context) {
+                            adapter.repostBtnClickListener?.onRepostBtnClicked(
+                                item,
+                                currentPosition
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 class HeaderViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHolder(view) {
@@ -154,35 +216,6 @@ class HeaderViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.View
 
 class FooterViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHolder(view) {
     // TODO: 08.09.20
-}
-
-fun bind(post: PostModel) {
-    with(itemView) {
-        authorTv.text = post.ownerName
-        contentTv.text = post.content
-        likesTv.text = post.likes.toString()
-        repostsTv.text = post.reposts.toString()
-
-        if (post.likeActionPerforming) {
-            likeBtn.setImageResource(R.drawable.ic_favorite_pending_24dp)
-        } else if (post.likedByMe) {
-            likeBtn.setImageResource(R.drawable.ic_favorite_active_24dp)
-            likesTv.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
-        } else {
-            likeBtn.setImageResource(R.drawable.ic_favorite_inactive_24dp)
-            likesTv.setTextColor(ContextCompat.getColor(context, R.color.colorBrown))
-        }
-
-        if (post.repostActionPerforming) {
-            repostBtn.setImageResource(R.drawable.ic_reposts_pending)
-        } else if (post.repostedByMe) {
-            repostBtn.setImageResource(R.drawable.ic_reposts_active)
-            repostsTv.setTextColor(ContextCompat.getColor(context, R.color.colorRed))
-        } else {
-            repostBtn.setImageResource(R.drawable.ic_reposts_inactive)
-            repostsTv.setTextColor(ContextCompat.getColor(context, R.color.colorBrown))
-        }
-    }
 }
 
 fun showDialog(context: Context, createBtnClicked: (content: String) -> Unit) {
