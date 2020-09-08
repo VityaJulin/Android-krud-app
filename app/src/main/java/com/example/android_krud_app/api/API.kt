@@ -51,5 +51,5 @@ interface API {
     suspend fun repostedByMe(@Path("id") id: Long): Response<PostModel>
 
     @GET("api/v1/posts/recent")
-    suspend fun getPostsAfter(@Path("id") id: Long): Response<List<PostModel>>
+    suspend fun getPostsAfter(): Response<List<PostModel>>
 }
