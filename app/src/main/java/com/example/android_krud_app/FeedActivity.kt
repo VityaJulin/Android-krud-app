@@ -73,9 +73,9 @@ class FeedActivity : AppCompatActivity(),
             item.repostActionPerforming = true
             with(container) {
                 adapter?.notifyItemChanged(position)
-                val response = Repository.repostedByMe(item.id)
+                val response = Repository.likedByMe(item.id)
                 if (response.isSuccessful) {
-                    item.updateLikes(response.body()!!)
+                    item.updatePost(response.body()!!)
                 }
                 adapter?.notifyItemChanged(position)
             }
