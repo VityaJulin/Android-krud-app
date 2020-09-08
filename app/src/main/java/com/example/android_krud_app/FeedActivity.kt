@@ -13,7 +13,7 @@ import splitties.activities.start
 import splitties.toast.toast
 
 class FeedActivity : AppCompatActivity(),
-    PostAdapter.OnLikeBtnClickListener {
+    PostAdapter.OnLikeBtnClickListener, PostAdapter.OnRepostBtnClickListener {
     private var dialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

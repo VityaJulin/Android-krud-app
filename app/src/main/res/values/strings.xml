@@ -20,4 +20,6 @@
     <string name="password_arent_match">Password aren\'t the same</string>
     <string name="password_incorrect">Password is incorrect</string>
     <string name="like_in_progress">Like is performing</string>
+    <string name="load_new_posts">load_new_posts</string>
+    <string name="load_more_posts">load_more_posts</string>
 </resources>
