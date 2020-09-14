@@ -93,7 +93,7 @@ class PostViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHo
             likeBtn.setOnClickListener {
                 val currentPosition = adapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[currentPosition]
+                    val item = adapter.list[adapterPosition - 1]
                     if (item.likeActionPerforming) {
                         context.toast(context.getString(R.string.like_in_progress))
                     } else {
@@ -104,7 +104,7 @@ class PostViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.ViewHo
             repostBtn.setOnClickListener {
                 val currentPosition = adapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
-                    val item = adapter.list[adapterPosition]
+                    val item = adapter.list[adapterPosition - 1]
                     if (item.repostedByMe) {
                         context.toast("Can't repost repost)")
                     } else {
