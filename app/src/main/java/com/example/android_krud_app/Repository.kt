@@ -66,5 +66,5 @@ object Repository {
 
     suspend fun repostedByMe(id: Long) = API.repostedByMe(id)
 
-    suspend fun getPostsAfter() = API.getPostsAfter()
+    suspend fun getPostsAfter(id: Long) = API.getPostsAfter(id)
 }
