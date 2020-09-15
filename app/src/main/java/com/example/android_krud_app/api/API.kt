@@ -38,7 +38,7 @@ interface API {
     @POST("api/v1/posts")
     suspend fun createPost(@Body createPostRequest: CreatePostRequest): Response<Void>
 
-    @GET("api/v1/posts")
+    @GET("api/v1/posts/recent")
     suspend fun getPosts(): Response<List<PostModel>>
 
     @POST("api/v1/posts/{id}/likes")
@@ -50,6 +50,9 @@ interface API {
     @POST("api/v1/posts/{id}/reposts")
     suspend fun repostedByMe(@Path("id") id: Long): Response<PostModel>
 
-    @GET("api/v1/posts/recent")
-    suspend fun getPostsAfter(id: Long): Response<List<PostModel>>
+    @GET("api/v1/posts/recent/after/{id}")
+    suspend fun getPostsAfter(@Path ("id")id: Long): Response<List<PostModel>>
+
+    @GET("api/v1/posts/recent/before/{id}")
+    suspend fun getPostsBefore(@Path ("id")id: Long): Response<List<PostModel>>
 }

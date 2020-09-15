@@ -257,7 +257,7 @@ class FooterViewHolder(val adapter: PostAdapter, view: View) : RecyclerView.View
                 GlobalScope.launch(Dispatchers.Main) {
                     // запрашиваем все посты после нашего первого поста
                     // (он же самый последний)
-                    val response = Repository.getPostsAfter(adapter.list[0].id)
+                    val response = Repository.getPostsBefore(adapter.list[0].id)
                     // восстанавливаем справедливость
                     progressbar.visibility = View.INVISIBLE
                     loadMoreBtn.isEnabled = true
